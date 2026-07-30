@@ -63,3 +63,6 @@ CREATE TABLE PAYMENT (
     Appointment_ID VARCHAR(10),
     FOREIGN KEY (Appointment_ID) REFERENCES APPOINTMENT(Appointment_ID)
 );
+
+
+
