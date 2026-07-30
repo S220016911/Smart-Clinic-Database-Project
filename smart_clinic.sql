@@ -1,1 +1,65 @@
+CREATE DATABASE smart_clinic;
+USE smart_clinic;
 
+CREATE TABLE PERSON (
+    Person_ID VARCHAR(10) PRIMARY KEY,
+    Fname VARCHAR(50) NOT NULL,
+    Lname VARCHAR(50) NOT NULL,
+    Phone VARCHAR(15) UNIQUE
+);
+
+CREATE TABLE DOCTOR (
+    Person_ID VARCHAR(10) PRIMARY KEY,
+    Specialization VARCHAR(50) NOT NULL,
+    Room_Number VARCHAR(10),
+    FOREIGN KEY (Person_ID) REFERENCES PERSON(Person_ID)
+);
+
+CREATE TABLE PATIENT (
+    Person_ID VARCHAR(10) PRIMARY KEY,
+    Blood_Type VARCHAR(5),
+    Emergency_Contact VARCHAR(15),
+    FOREIGN KEY (Person_ID) REFERENCES PERSON(Person_ID)
+);
+
+CREATE TABLE APPOINTMENT (
+    Appointment_ID VARCHAR(10) PRIMARY KEY,
+    App_Date DATE NOT NULL,
+    App_Time TIME NOT NULL,
+    Status VARCHAR(20) NOT NULL,
+    Doctor_ID VARCHAR(10),
+    Patient_ID VARCHAR(10),
+    FOREIGN KEY (Doctor_ID) REFERENCES DOCTOR(Person_ID),
+    FOREIGN KEY (Patient_ID) REFERENCES PATIENT(Person_ID)
+);
+
+CREATE TABLE TREATMENT (
+    Treatment_ID VARCHAR(10) PRIMARY KEY,
+    Description VARCHAR(255) NOT NULL,
+    Cost DECIMAL(10, 2) NOT NULL,
+    Appointment_ID VARCHAR(10),
+    FOREIGN KEY (Appointment_ID) REFERENCES APPOINTMENT(Appointment_ID)
+);
+
+CREATE TABLE MEDICINE (
+    Medicine_ID VARCHAR(10) PRIMARY KEY,
+    Med_Name VARCHAR(100) NOT NULL,
+    Dosage VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE PRESCRIPTION (
+    Prescription_ID VARCHAR(10) PRIMARY KEY,
+    Treatment_ID VARCHAR(10),
+    Medicine_ID VARCHAR(10),
+    FOREIGN KEY (Treatment_ID) REFERENCES TREATMENT(Treatment_ID),
+    FOREIGN KEY (Medicine_ID) REFERENCES MEDICINE(Medicine_ID)
+);
+
+CREATE TABLE PAYMENT (
+    Payment_ID VARCHAR(10) PRIMARY KEY,
+    Amount DECIMAL(10, 2) NOT NULL,
+    Pay_Method VARCHAR(50) NOT NULL,
+    Pay_Date DATE NOT NULL,
+    Appointment_ID VARCHAR(10),
+    FOREIGN KEY (Appointment_ID) REFERENCES APPOINTMENT(Appointment_ID)
+);
