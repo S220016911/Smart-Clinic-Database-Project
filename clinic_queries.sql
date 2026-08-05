@@ -54,3 +54,38 @@ BEGIN
     END IF;
 END; //
 DELIMITER ;
+-- Query 6: Nested Query to find patients with scheduled appointments
+SELECT Fname, Lname 
+FROM PERSON 
+WHERE Person_ID IN (
+    SELECT Patient_ID 
+    FROM APPOINTMENT 
+    WHERE Status = 'Scheduled'
+);
+
+-- Query 7: UPDATE Statement
+UPDATE MEDICINE 
+SET Dosage = '500mg' 
+WHERE Med_Name = 'Panadol';
+
+-- Query 8: DELETE Statement
+DELETE FROM PRESCRIPTION 
+WHERE Prescription_ID = 'PR005';
+
+-- Query 9: Create a VIEW
+CREATE VIEW Doctor_Info AS 
+SELECT PERSON.Fname, PERSON.Lname, DOCTOR.Specialization 
+FROM PERSON 
+JOIN DOCTOR ON PERSON.Person_ID = DOCTOR.Person_ID;
+
+-- Query 10: Create a TRIGGER
+DELIMITER //
+CREATE TRIGGER Prevent_Negative_Cost
+BEFORE INSERT ON TREATMENT
+FOR EACH ROW
+BEGIN
+    IF NEW.Cost < 0 THEN
+        SET NEW.Cost = 0;
+    END IF;
+END; //
+DELIMITER ;
